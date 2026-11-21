@@ -1,4 +1,4 @@
-# Acrylic cases for Waveshare 5-inch and 7B displays
+# Acrylic cases for Waveshare displays and Raspberry Pi 4
 
 Prototype cutting files for **two separate six-panel enclosures** made from nominal 3 mm cast acrylic. The metal display body passes through the front opening; the outer coloured rim rests on the acrylic and attaches with the display's adhesive tape. Wall tabs enter matching slots in the front and rear plates. The four corner fasteners remain removable.
 
@@ -46,3 +46,7 @@ The project uses Python 3.13, with dependencies pinned by `uv.lock`.
 These files are **not approved for final cutting**. First check the paper front/rear templates against both physical modules, including the adhesive rim, mount holes, and orientation. The USB/power openings in the side walls, board spacer heights, actual acrylic thickness, laser kerf, and physical assembly fit remain unverified. The side walls currently have no connector openings. Dry-fit the enclosure before applying tape, and avoid loading the touch glass through the rear fasteners.
 
 See the [generation and fit-check flow](docs/diagrams/acrylic-case-generation-flow.md).
+
+## Raspberry Pi 4 Model B
+
+The separate [Raspberry/V4 prototype](Raspberry/V4/README.md) is a six-part acrylic case with an open GPIO service window and side openings for the Pi 4 ports. It includes its own [DXF cut sheet](Raspberry/V4/output/prototype-cut-sheet.dxf), [1:1 paper templates](Raspberry/V4/output/a4-fit-templates.pdf), fit coupon, SVG parts, and generator. Check the physical board, plug clearance, and laser kerf before a final cut.
