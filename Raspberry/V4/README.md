@@ -32,6 +32,7 @@ The bottom and top are held by tabs from all four walls, with four removable M3 
 ## Files
 
 - [`output/prototype-cut-sheet.dxf`](output/prototype-cut-sheet.dxf): all six case parts, `CUT` layer, millimetres.
+- [`output/a4-cut-layout.pdf`](output/a4-cut-layout.pdf): all six case parts on one A4 landscape page at 1:1, with no text. The separate grey line at the lower edge is 50 mm long for print calibration and is not a cut contour.
 - [`output/a4-fit-templates.pdf`](output/a4-fit-templates.pdf): six A4 landscape pages, one part per page at 1:1, each with a 50 mm scale line. The bottom page includes a dashed PCB footprint for reference only; it is not a cut contour.
 - `output/*.svg`: individual 1:1 case parts.
 - [`output/fit-coupon.dxf`](output/fit-coupon.dxf) and [`output/fit-coupon.pdf`](output/fit-coupon.pdf): four test slots plus one 12 × 3 mm test tab. Slot widths are 3.0, 3.1, 3.2, and 3.3 mm from left to right; all have 12.1 mm length.
@@ -40,7 +41,7 @@ Regenerate with `uv run python generate.py`. Dependencies are locked in `uv.lock
 
 ## Before cutting the case
 
-1. Print the six-page PDF at **Actual size / 100%**, with page fitting disabled, and measure the 50 mm line.
+1. Print either PDF at **Actual size / 100%**, with page fitting disabled, and measure the 50 mm line. Use the new one-page layout when all six parts are needed together.
 2. Lay the real Pi 4 on the bottom paper template. Confirm all four M2.5 holes, board orientation, and the microSD side.
 3. Check the port-wall paper openings against the actual USB-C, micro-HDMI, AV, USB, Ethernet, and microSD plugs you intend to use. The factory drawing gives board locations and connector heights; the cable plug bodies and bend radii are not specified in it.
 4. Check that the top window gives enough hand and cable access to the GPIO, CSI, DSI, and any other contacts needed in the intended installation.

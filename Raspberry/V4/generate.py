@@ -344,6 +344,47 @@ def write_pdf(parts: tuple[Part, ...], path: Path) -> None:
     document.save()
 
 
+def write_a4_cut_layout(parts: tuple[Part, ...], path: Path) -> None:
+    """Place all six cut profiles at 1:1 on one text-free A4 page."""
+    assert len(parts) == 6
+    positions = ((10, 114), (125, 114), (10, 69), (119, 69), (10, 24), (89, 24))
+    page_width, page_height = landscape(A4)
+    bounds = []
+    document = canvas.Canvas(str(path), pagesize=(page_width, page_height))
+    document.setLineWidth(0.15 * mm)
+    for part, (x_offset, y_offset) in zip(parts, positions, strict=True):
+        assert 10 <= x_offset and 10 <= y_offset
+        assert (x_offset + part.width) * mm <= page_width - 10 * mm
+        assert (y_offset + part.height) * mm <= page_height - 10 * mm
+        for left, bottom, right, top in bounds:
+            assert (
+                x_offset >= right + 5
+                or x_offset + part.width + 5 <= left
+                or y_offset >= top + 5
+                or y_offset + part.height + 5 <= bottom
+            )
+        bounds.append(
+            (x_offset, y_offset, x_offset + part.width, y_offset + part.height)
+        )
+        document.saveState()
+        document.translate(x_offset * mm, y_offset * mm)
+        contour = document.beginPath()
+        contour.moveTo(part.outline[0][0] * mm, part.outline[0][1] * mm)
+        for x, y in part.outline[1:]:
+            contour.lineTo(x * mm, y * mm)
+        contour.close()
+        document.drawPath(contour)
+        for rect in part.cutouts:
+            document.rect(rect.x * mm, rect.y * mm, rect.width * mm, rect.height * mm)
+        for hole in part.holes:
+            document.circle(hole.x * mm, hole.y * mm, hole.radius * mm)
+        document.restoreState()
+    document.setStrokeColorRGB(0.5, 0.5, 0.5)
+    document.line(10 * mm, 10 * mm, 60 * mm, 10 * mm)
+    document.showPage()
+    document.save()
+
+
 def main() -> None:
     """Validate and generate all case files."""
     parts = make_parts()
@@ -364,6 +405,7 @@ def main() -> None:
     write_dxf(coupon, OUT / "fit-coupon.dxf", ((0, 0), (100, 0)))
     write_pdf(parts, OUT / "a4-fit-templates.pdf")
     write_pdf(coupon, OUT / "fit-coupon.pdf")
+    write_a4_cut_layout(parts, OUT / "a4-cut-layout.pdf")
 
 
 if __name__ == "__main__":
