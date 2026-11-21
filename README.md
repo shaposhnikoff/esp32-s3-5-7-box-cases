@@ -1,5 +1,7 @@
 # Acrylic cases for Waveshare displays and Raspberry Pi 4
 
+[Інструкція для майстерні українською](docs/instruction-for-cutting-uk.md)
+
 Prototype cutting files for **two separate six-panel enclosures** made from nominal 3 mm cast acrylic. The metal display body passes through the front opening; the outer coloured rim rests on the acrylic and attaches with the display's adhesive tape. Wall tabs enter matching slots in the front and rear plates. The four corner fasteners remain removable.
 
 ## Dimensions
