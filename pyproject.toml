@@ -1,0 +1,12 @@
+[project]
+name = "acrylic-cases"
+version = "0.1.0"
+description = "Laser cutting templates for two Waveshare display enclosures"
+requires-python = ">=3.13"
+dependencies = [
+    "ezdxf>=1.4.5",
+    "reportlab>=5.1.0",
+]
+
+[dependency-groups]
+dev = []

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="25mm" height="20mm" viewBox="0 0 25 20">
+<title>tab-gauge</title>
+<g fill="none" stroke="#000" stroke-width="0.1">
+<polygon points="0,3 6.5,3 6.5,0 18.5,0 18.5,3 25,3 25,20 0,20" />
+</g>
+</svg>

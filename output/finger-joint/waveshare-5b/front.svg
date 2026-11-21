@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="160mm" height="115mm" viewBox="0 0 160 115">
+<title>front</title>
+<g fill="none" stroke="#000" stroke-width="0.1">
+<rect x="0" y="0" width="160" height="115" />
+<rect x="19.15" y="17.2" width="121.7" height="80.6" />
+<rect x="35.45" y="2.95" width="12.1" height="3.1" />
+<rect x="73.95" y="2.95" width="12.1" height="3.1" />
+<rect x="112.45" y="2.95" width="12.1" height="3.1" />
+<rect x="35.45" y="108.95" width="12.1" height="3.1" />
+<rect x="73.95" y="108.95" width="12.1" height="3.1" />
+<rect x="112.45" y="108.95" width="12.1" height="3.1" />
+<rect x="2.95" y="34.28333333333334" width="3.1" height="12.1" />
+<rect x="2.95" y="68.61666666666667" width="3.1" height="12.1" />
+<rect x="153.95" y="34.28333333333334" width="3.1" height="12.1" />
+<rect x="153.95" y="68.61666666666667" width="3.1" height="12.1" />
+<circle cx="8" cy="8" r="1.65" />
+<circle cx="8" cy="107" r="1.65" />
+<circle cx="152" cy="8" r="1.65" />
+<circle cx="152" cy="107" r="1.65" />
+</g>
+</svg>

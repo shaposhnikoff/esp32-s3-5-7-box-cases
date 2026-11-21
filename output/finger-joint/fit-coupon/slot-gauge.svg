@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="90mm" height="25mm" viewBox="0 0 90 25">
+<title>slot-gauge</title>
+<g fill="none" stroke="#000" stroke-width="0.1">
+<rect x="0" y="0" width="90" height="25" />
+<rect x="6" y="10" width="12.1" height="3.0" />
+<rect x="27" y="10" width="12.1" height="3.1" />
+<rect x="48" y="10" width="12.1" height="3.2" />
+<rect x="69" y="10" width="12.1" height="3.3" />
+</g>
+</svg>
