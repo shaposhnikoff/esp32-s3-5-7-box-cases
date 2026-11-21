@@ -9,8 +9,10 @@ flowchart TD
     D --> E
     E --> F[Write individual SVG parts]
     E --> G[Write DXF cut sheets in millimetres]
-    E --> H[Write A4 paper templates at 1 to 1]
+    E --> H[Write individual A4 fit templates]
+    E --> J[Pack six cut profiles on one A4 page at 1 to 1]
     F --> I[Paper and acrylic fit checks]
     G --> I
     H --> I
+    J --> I
 ```
