@@ -2,7 +2,6 @@
 
 Потрібно виготовити **три окремі пробні корпуси** з литого акрилу номінальною товщиною **3 мм**: для Raspberry Pi 4 Model B, екрана Waveshare 5″ та екрана Waveshare 7B. Кожен корпус складається із шести деталей. Усі розміри у файлах — у міліметрах.
 
-Для лазерного різання використовуйте **DXF**. Окремі **SVG** містять ті самі деталі. **PDF** призначені для друку паперових шаблонів і перевірки посадки; друкуйте їх у масштабі **100%**, без припасування до сторінки, та перевіряйте контрольну лінію 50 мм. Спочатку виріжте пробний зразок з’єднання з фактичного акрилу та перевірте входження зубців у пази.
 
 ## 1. Raspberry Pi 4 Model B
 
@@ -49,11 +48,3 @@
 - [SVG — ліва стінка](https://github.com/shaposhnikoff/esp32-s3-5-7-box-cases/blob/main/output/finger-joint/waveshare-7b/left.svg)
 - [SVG — права стінка](https://github.com/shaposhnikoff/esp32-s3-5-7-box-cases/blob/main/output/finger-joint/waveshare-7b/right.svg)
 
-**Спільний пробний зразок з’єднання для корпусів екранів:** [DXF](https://github.com/shaposhnikoff/esp32-s3-5-7-box-cases/blob/main/output/finger-joint/fit-coupon/fit-coupon.dxf) · [PDF](https://github.com/shaposhnikoff/esp32-s3-5-7-box-cases/blob/main/output/finger-joint/fit-coupon/fit-coupon.pdf) · [SVG пазів](https://github.com/shaposhnikoff/esp32-s3-5-7-box-cases/blob/main/output/finger-joint/fit-coupon/slot-gauge.svg) · [SVG зубця](https://github.com/shaposhnikoff/esp32-s3-5-7-box-cases/blob/main/output/finger-joint/fit-coupon/tab-gauge.svg).
-
-## Перед виготовленням повних комплектів
-
-1. Роздрукувати PDF у масштабі 1:1 та прикласти реальні плати й екрани до паперових шаблонів.
-2. Вирізати пробні з’єднання з тієї самої партії акрилу й перевірити посадку без надмірного зусилля.
-3. Узгодити розміри й розташування отворів для кабелів. У корпусах екранів отвори для роз’ємів у бічних стінках поки **не передбачені**.
-4. Після перевірки зробити один пробний комплект кожного корпусу; фінальний розкрій погодити за результатом примірки.
