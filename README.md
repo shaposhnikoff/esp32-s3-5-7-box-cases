@@ -52,3 +52,5 @@ See the [generation and fit-check flow](docs/diagrams/acrylic-case-generation-fl
 ## Raspberry Pi 4 Model B
 
 The separate [Raspberry/V4 prototype](Raspberry/V4/README.md) is a six-part acrylic case with an open GPIO service window and side openings for the Pi 4 ports. It includes its own [DXF cut sheet](Raspberry/V4/output/prototype-cut-sheet.dxf), [single-page A4 layout at 1:1](Raspberry/V4/output/a4-cut-layout.pdf), fit coupon, SVG parts, and generator. Check the physical board, plug clearance, and laser kerf before a final cut.
+
+The [3D showcase](Raspberry/V4/visualization/README.md) includes a Blender scene with transparent acrylic, a detailed Raspberry Pi 4 board, a colour GLB, a GitHub-rotatable STL, and a rendered preview.
