@@ -1,6 +1,7 @@
 """Generate 1:1 acrylic enclosure prototypes from measured board dimensions."""
 
 from dataclasses import dataclass
+from math import cos, radians, sin
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -49,7 +50,7 @@ class Part:
 
 @dataclass(frozen=True)
 class Case:
-    """A six-part case intended for three-millimetre acrylic."""
+    """An enclosure and its two supports, cut from three-millimetre acrylic."""
 
     name: str
     width: float
@@ -59,19 +60,12 @@ class Case:
     mount_x: tuple[float, float]
     mount_y: tuple[float, float]
     mount_diameter: float
+    support_inset: float
+    support_toe: float
+    support_heel: float
 
 
 CASES = (
-    Case(
-        name="waveshare-5b",
-        width=160,
-        height=115,
-        wall_depth=30,
-        window=Rect(19.15, 17.2, 121.7, 80.6),
-        mount_x=(24.5, 135.5),
-        mount_y=(26.225, 89.225),
-        mount_diameter=3.2,
-    ),
     Case(
         name="waveshare-7b",
         width=224,
@@ -81,12 +75,32 @@ CASES = (
         mount_x=(50.43, 176.63),
         mount_y=(36.20, 101.85),
         mount_diameter=3.6,
+        support_inset=26,
+        support_toe=100,
+        support_heel=88,
+    ),
+    Case(
+        name="waveshare-5b",
+        width=160,
+        height=115,
+        wall_depth=30,
+        window=Rect(19.15, 17.2, 121.7, 80.6),
+        mount_x=(24.5, 135.5),
+        mount_y=(26.225, 89.225),
+        mount_diameter=3.2,
+        support_inset=16,
+        support_toe=80,
+        support_heel=72,
     ),
 )
 
 ACRYLIC_THICKNESS = 3.0
 SLOT_CLEARANCE = 0.1
 TAB_LENGTH = 12.0
+SUPPORT_TAB_HEIGHTS = (20, 42)
+CASE_TILT = radians(15)
+CASE_LIFT = 10.0
+SHEET_GAP = 8
 
 
 def tab_intervals(length: float, count: int) -> tuple[tuple[float, float], ...]:
@@ -147,8 +161,68 @@ def face_slots(spec: Case) -> tuple[Rect, ...]:
     return tuple(slots)
 
 
+def cut_bounds(cut: Rect | Circle) -> tuple[float, float, float, float]:
+    """Return minimum and maximum coordinates for an internal cut."""
+    if isinstance(cut, Rect):
+        return cut.x, cut.y, cut.x + cut.width, cut.y + cut.height
+    radius = cut.diameter / 2
+    return cut.x - radius, cut.y - radius, cut.x + radius, cut.y + radius
+
+
+def support_slots(spec: Case, existing: tuple[Rect | Circle, ...]) -> tuple[Rect, ...]:
+    """Locate the two tab slots per support in the rear plate coordinates."""
+    width = ACRYLIC_THICKNESS + SLOT_CLEARANCE
+    length = TAB_LENGTH + SLOT_CLEARANCE
+    slots = []
+    for x in (spec.support_inset, spec.width - spec.support_inset):
+        for height in SUPPORT_TAB_HEIGHTS:
+            slot = Rect(x - width / 2, spec.height - height - length / 2, width, length)
+            sx0, sy0, sx1, sy1 = cut_bounds(slot)
+            for cut in (*existing, *slots):
+                x0, y0, x1, y1 = cut_bounds(cut)
+                if sx0 <= x1 and x0 <= sx1 and sy0 <= y1 and y0 <= sy1:
+                    raise ValueError(f"Support slot collides with {cut} in {spec.name}")
+            slots.append(slot)
+    return tuple(slots)
+
+
+def support_parts(spec: Case) -> tuple[Part, Part]:
+    """Draw two solid side profiles with two tabs normal to the tilted rear plate."""
+
+    def rear_point(height: float, insertion: float = 0) -> tuple[float, float]:
+        """Transform a position on the rear plate to the upright support view."""
+        return (
+            height * sin(CASE_TILT) - insertion * cos(CASE_TILT),
+            CASE_LIFT + height * cos(CASE_TILT) + insertion * sin(CASE_TILT),
+        )
+
+    toe, heel = -spec.support_toe, spec.support_heel
+    top = rear_point(54)
+    profile = [(toe, 0), (heel, 0), (heel, 8), top]
+    for height in reversed(SUPPORT_TAB_HEIGHTS):
+        upper, lower = height + TAB_LENGTH / 2, height - TAB_LENGTH / 2
+        profile.extend(
+            (
+                rear_point(upper),
+                rear_point(upper, ACRYLIC_THICKNESS),
+                rear_point(lower, ACRYLIC_THICKNESS),
+                rear_point(lower),
+            )
+        )
+    profile.extend((rear_point(5), (-18, 8), (toe, 8)))
+    height = round(top[1], 6)
+    outline = Polygon(
+        tuple((round(x - toe, 6), round(top[1] - z, 6)) for x, z in profile)
+    )
+    width = heel - toe
+    return (
+        Part("left-support", width, height, outer=outline),
+        Part("right-support", width, height, outer=outline),
+    )
+
+
 def make_parts(spec: Case) -> tuple[Part, ...]:
-    """Build two slotted faces and four walls with through-tabs."""
+    """Build the six enclosure panels and two rear-mounted supports."""
     corner_holes = tuple(
         Circle(x, y, 3.3) for x in (8, spec.width - 8) for y in (8, spec.height - 8)
     )
@@ -161,6 +235,7 @@ def make_parts(spec: Case) -> tuple[Part, ...]:
         for i in range(4)
     )
     slots = face_slots(spec)
+    rear_cuts = (*slots, *corner_holes, *board_holes, *vents)
     top_length = spec.width - 2 * ACRYLIC_THICKNESS
     side_length = spec.height - 4 * ACRYLIC_THICKNESS
     wall_height = spec.wall_depth + 2 * ACRYLIC_THICKNESS
@@ -176,12 +251,13 @@ def make_parts(spec: Case) -> tuple[Part, ...]:
             "rear",
             spec.width,
             spec.height,
-            (*slots, *corner_holes, *board_holes, *vents),
+            (*rear_cuts, *support_slots(spec, rear_cuts)),
         ),
         Part("top", top_length, wall_height, outer=top_outline),
         Part("bottom", top_length, wall_height, outer=top_outline),
         Part("left", side_length, wall_height, outer=side_outline),
         Part("right", side_length, wall_height, outer=side_outline),
+        *support_parts(spec),
     )
 
 
@@ -225,16 +301,7 @@ def validate(parts: tuple[Part, ...]) -> None:
                 if not (0 <= x <= part.width and 0 <= y <= part.height):
                     raise ValueError(f"Outer contour outside {part.name}: {(x, y)}")
         for cut in part.cutouts:
-            if isinstance(cut, Rect):
-                bounds = (cut.x, cut.y, cut.x + cut.width, cut.y + cut.height)
-            else:
-                radius = cut.diameter / 2
-                bounds = (
-                    cut.x - radius,
-                    cut.y - radius,
-                    cut.x + radius,
-                    cut.y + radius,
-                )
+            bounds = cut_bounds(cut)
             if not (0 <= bounds[0] < bounds[2] <= part.width):
                 raise ValueError(f"Cut outside {part.name}: {cut}")
             if not (0 <= bounds[1] < bounds[3] <= part.height):
@@ -276,9 +343,10 @@ def svg(part: Part) -> str:
 def sheet_positions(
     spec: Case, parts: tuple[Part, ...]
 ) -> tuple[tuple[Part, float, float], ...]:
-    """Place six separate panels without nesting parts inside the front window."""
-    gap = 8
-    front, rear, top, bottom, left, right = parts
+    """Place eight separate parts without nesting inside panel cutouts."""
+    gap = SHEET_GAP
+    front, rear, top, bottom, left, right, left_support, right_support = parts
+    support_y = spec.height + top.height + bottom.height + 3 * gap
     return (
         (front, 0, 0),
         (rear, front.width + gap, 0),
@@ -286,6 +354,8 @@ def sheet_positions(
         (bottom, 0, spec.height + top.height + 2 * gap),
         (left, spec.width + gap, spec.height + gap),
         (right, spec.width + gap, spec.height + left.height + 2 * gap),
+        (left_support, 0, support_y),
+        (right_support, left_support.width + gap, support_y),
     )
 
 
@@ -370,8 +440,10 @@ def draw_pdf_part(pdf: canvas.Canvas, part: Part) -> None:
         pdf.drawString(
             12 * mm,
             page_height - 15 * mm,
-            "Coordinates face case front; flip paper to check from rear",
+            "Four support slots near the bottom; coordinates face case front",
         )
+    elif part.name.endswith("-support"):
+        pdf.drawString(12 * mm, page_height - 15 * mm, "Two 12 mm tabs engage the rear plate")
     elif part.name == "slot-gauge":
         pdf.setFont("Helvetica", 7)
         for slot in part.cutouts:
@@ -386,30 +458,37 @@ def draw_pdf_part(pdf: canvas.Canvas, part: Part) -> None:
     pdf.showPage()
 
 
+def write_case(spec: Case, root: Path) -> tuple[tuple[Part, float, float], ...]:
+    """Generate one case's cutting files and return its sheet layout."""
+    folder = root / spec.name
+    folder.mkdir(parents=True, exist_ok=True)
+    parts = make_parts(spec)
+    validate(parts)
+    for part in parts:
+        (folder / f"{part.name}.svg").write_text(svg(part))
+    positions = sheet_positions(spec, parts)
+    write_dxf(folder / "prototype-cut-sheet.dxf", positions)
+    pdf = canvas.Canvas(str(folder / "a4-fit-templates.pdf"), pagesize=landscape(A4))
+    for part in parts:
+        draw_pdf_part(pdf, part)
+    pdf.save()
+    front_pdf = canvas.Canvas(str(folder / "front-panel-1to1.pdf"), pagesize=landscape(A4))
+    draw_pdf_part(front_pdf, parts[0])
+    front_pdf.save()
+    print(f"Generated {spec.name}: {len(parts)} parts")
+    return positions
+
+
 def main() -> None:
     """Generate machine vectors and A4 fit templates for both display boards."""
     root = Path(__file__).parent / "output" / "finger-joint"
+    combined = []
+    offset = 0
     for spec in CASES:
-        folder = root / spec.name
-        folder.mkdir(parents=True, exist_ok=True)
-        parts = make_parts(spec)
-        validate(parts)
-        for part in parts:
-            (folder / f"{part.name}.svg").write_text(svg(part))
-        positions = sheet_positions(spec, parts)
-        write_dxf(folder / "prototype-cut-sheet.dxf", positions)
-        pdf = canvas.Canvas(
-            str(folder / "a4-fit-templates.pdf"), pagesize=landscape(A4)
-        )
-        for part in parts:
-            draw_pdf_part(pdf, part)
-        pdf.save()
-        front_pdf = canvas.Canvas(
-            str(folder / "front-panel-1to1.pdf"), pagesize=landscape(A4)
-        )
-        draw_pdf_part(front_pdf, parts[0])
-        front_pdf.save()
-        print(f"Generated {spec.name}: {len(parts)} parts")
+        positions = write_case(spec, root)
+        combined.extend((part, x + offset, y) for part, x, y in positions)
+        offset += max(x + part.width for part, x, _ in positions) + SHEET_GAP
+    write_dxf(root / "waveshare-7b-5b-cut-sheet.dxf", tuple(combined))
 
     coupon_folder = root / "fit-coupon"
     coupon_folder.mkdir(parents=True, exist_ok=True)

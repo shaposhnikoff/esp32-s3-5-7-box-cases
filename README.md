@@ -2,7 +2,7 @@
 
 [Інструкція для майстерні українською](docs/instruction-for-cutting-uk.md)
 
-Prototype cutting files for **two separate six-panel enclosures** made from nominal 3 mm cast acrylic. The metal display body passes through the front opening; the outer coloured rim rests on the acrylic and attaches with the display's adhesive tape. Wall tabs enter matching slots in the front and rear plates. The four corner fasteners remain removable.
+Prototype cutting files for **two display enclosures**, each with six panels and two supports cut from nominal 3 mm cast acrylic. The metal display body passes through the front opening; the outer coloured rim rests on the acrylic and attaches with the display's adhesive tape. Wall tabs enter matching slots in the front and rear plates. The four corner fasteners remain removable.
 
 ## Dimensions
 
@@ -17,6 +17,9 @@ All dimensions are in millimetres. Opening coordinates are measured from the top
 | Outer touch glass | 127.7 × 87.45 | 192.96 × 110.76 |
 | Minimum nominal glass overlap around opening | 3.0 | 3.98 |
 | Assembled outer depth | 36 | 36 |
+| Support base length | 152 | 188 |
+| Support slot center X from left edge | 16, 144 | 26, 198 |
+| Support slot center Y from bottom edge | 20, 42 | 20, 42 |
 
 The 7B dimensional drawing calls out 97.60 mm across its backing; the prototype opening accounts for this larger value and the body offset. The supplied five-inch archive is named `ESP32-S3-Touch-LCD-5_Drawing.zip`, without `B`. Its fit to a 5B module has **not** been physically verified.
 
@@ -24,15 +27,16 @@ The panel sizes, opening clearances, wall depth, and corner fastener positions a
 
 ## Cutting and fit files
 
-Each enclosure has six individual SVG parts, one millimetre-unit DXF sheet, a six-page A4 PDF with one part per page, and a single-page 1:1 front-plate PDF.
+Each enclosure has eight individual SVG parts, one millimetre-unit DXF sheet, an eight-page A4 PDF with one part per page, and a single-page 1:1 front-plate PDF.
 
 - **5-inch:** [front plate 1:1](output/finger-joint/waveshare-5b/front-panel-1to1.pdf) · [A4 templates](output/finger-joint/waveshare-5b/a4-fit-templates.pdf) · [DXF sheet](output/finger-joint/waveshare-5b/prototype-cut-sheet.dxf)
 - **7B:** [front plate 1:1](output/finger-joint/waveshare-7b/front-panel-1to1.pdf) · [A4 templates](output/finger-joint/waveshare-7b/a4-fit-templates.pdf) · [DXF sheet](output/finger-joint/waveshare-7b/prototype-cut-sheet.dxf)
+- **7B and 5B together:** [combined DXF sheet, 16 parts](output/finger-joint/waveshare-7b-5b-cut-sheet.dxf)
 - **Joint calibration:** [fit coupon PDF](output/finger-joint/fit-coupon/fit-coupon.pdf) · [fit coupon DXF](output/finger-joint/fit-coupon/fit-coupon.dxf)
 
-Print PDF templates at **100% / Actual size**, with page fitting disabled. Check the 50 mm control line with a ruler. The DXF and SVG files are cutting geometry; the PDFs are paper fit templates. The six case parts are laid out separately on the DXF sheet.
+Print PDF templates at **100% / Actual size**, with page fitting disabled. Check the 50 mm control line with a ruler. The DXF and SVG files are cutting geometry. The PDFs are paper fit templates. All eight parts have separate outlines on each DXF sheet.
 
-The walls have 12 × 3 mm tabs. Front and rear plates have ten nominal 12.1 × 3.1 mm slots each. The separate coupon has four slot widths, from left to right: 3.0, 3.1, 3.2, and 3.3 mm. Test the actual acrylic and laser kerf on this coupon before choosing a case slot width. Edit `SLOT_CLEARANCE` in `generate.py` and regenerate if a different fit is needed.
+The walls have 12 × 3 mm tabs. Front and rear plates have ten nominal 12.1 × 3.1 mm wall slots each. The rear plate has four additional 3.1 × 12.1 mm through slots. Each triangular support has two 12 mm tabs that enter the rear plate by 3 mm for gluing. The supports hold the enclosure at 15° from vertical. The separate coupon has four slot widths from 3.0 to 3.3 mm in 0.1 mm increments. Test the actual acrylic and laser kerf on this coupon before choosing a case slot width. Edit `SLOT_CLEARANCE` in `generate.py` and regenerate if a different fit is needed.
 
 ## Waveshare 3D previews
 
