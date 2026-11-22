@@ -36,8 +36,8 @@ The walls have 12 × 3 mm tabs. Front and rear plates have ten nominal 12.1 × 3
 
 ## Waveshare 3D previews
 
-- **5-inch** · [Rotate on GitHub](visualization/waveshare-5b/waveshare-5b-acrylic-showcase.stl) · [Blender project, render and colour GLB](visualization/README.md#waveshare-5-inch)
-- **7B** · [Rotate on GitHub](visualization/waveshare-7b/waveshare-7b-acrylic-showcase.stl) · [Blender project, render and colour GLB](visualization/README.md#waveshare-7b)
+- **5-inch** · [Rotate on GitHub](visualization/waveshare-5b/waveshare-5b-acrylic-showcase.stl) · [Photoreal render, Blender projects and colour GLB](visualization/README.md#waveshare-5-inch)
+- **7B** · [Rotate on GitHub](visualization/waveshare-7b/waveshare-7b-acrylic-showcase.stl) · [Photoreal render, Blender projects and colour GLB](visualization/README.md#waveshare-7b)
 
 ## Generate
 
