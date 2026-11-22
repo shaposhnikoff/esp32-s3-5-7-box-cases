@@ -36,6 +36,7 @@ The bottom and top are held by tabs from all four walls, with four removable M3 
 - [`output/a4-fit-templates.pdf`](output/a4-fit-templates.pdf): six A4 landscape pages, one part per page at 1:1, each with a 50 mm scale line. The bottom page includes a dashed PCB footprint for reference only; it is not a cut contour.
 - `output/*.svg`: individual 1:1 case parts.
 - [`output/fit-coupon.dxf`](output/fit-coupon.dxf) and [`output/fit-coupon.pdf`](output/fit-coupon.pdf): four test slots plus one 12 × 3 mm test tab. Slot widths are 3.0, 3.1, 3.2, and 3.3 mm from left to right; all have 12.1 mm length.
+- [`visualization/`](visualization/README.md): Blender project, colour GLB, GitHub-rotatable STL, and rendered preview of the exploded case with a detailed Pi 4 board.
 
 Regenerate with `uv run python generate.py`. Dependencies are locked in `uv.lock` and Python is pinned in `.python-version`.
 
