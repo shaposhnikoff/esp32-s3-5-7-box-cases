@@ -6,6 +6,7 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 
 import ezdxf
+from ezdxf import bbox
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
@@ -479,16 +480,41 @@ def write_case(spec: Case, root: Path) -> tuple[tuple[Part, float, float], ...]:
     return positions
 
 
+def write_workshop_dxf(output: Path, waveshare: Path, raspberry_pi: Path) -> None:
+    """Combine the Waveshare and Raspberry Pi sheets without changing their cuts."""
+    drawing = ezdxf.readfile(waveshare)
+    pi = ezdxf.readfile(raspberry_pi)
+    if drawing.units != pi.units or drawing.units != 4:
+        raise ValueError("Workshop sheets must use millimetres")
+
+    layout = drawing.modelspace()
+    pi_layout = pi.modelspace()
+    pi_min = bbox.extents(pi_layout).extmin
+    pi_y = bbox.extents(layout).extmax.y + SHEET_GAP
+    for entity in pi_layout:
+        cut = entity.copy()
+        cut.translate(-pi_min.x, pi_y - pi_min.y, 0)
+        layout.add_foreign_entity(cut)
+    drawing.saveas(output)
+
+
 def main() -> None:
-    """Generate machine vectors and A4 fit templates for both display boards."""
-    root = Path(__file__).parent / "output" / "finger-joint"
+    """Generate the display templates and the combined workshop cut sheet."""
+    project = Path(__file__).parent
+    root = project / "output" / "finger-joint"
     combined = []
     offset = 0
     for spec in CASES:
         positions = write_case(spec, root)
         combined.extend((part, x + offset, y) for part, x, y in positions)
         offset += max(x + part.width for part, x, _ in positions) + SHEET_GAP
-    write_dxf(root / "waveshare-7b-5b-cut-sheet.dxf", tuple(combined))
+    waveshare_sheet = root / "waveshare-7b-5b-cut-sheet.dxf"
+    write_dxf(waveshare_sheet, tuple(combined))
+    write_workshop_dxf(
+        root / "workshop-all-cases.dxf",
+        waveshare_sheet,
+        project / "Raspberry" / "V4" / "output" / "prototype-cut-sheet.dxf",
+    )
 
     coupon_folder = root / "fit-coupon"
     coupon_folder.mkdir(parents=True, exist_ok=True)

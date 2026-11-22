@@ -10,6 +10,7 @@ flowchart TD
     E -- No --> F[Stop generation with an error]
     E -- Yes --> G[Write individual SVG panels]
     G --> H[Write individual and combined DXF sheets in millimetres]
+    H --> W[Add Raspberry Pi cuts to the workshop sheet]
     H --> I[Write eight A4 fit templates at 1:1 scale]
     I --> J[Write tab and slot fit coupon]
     J --> K[Paper fit display and check adhesive rim overlap]

@@ -32,6 +32,7 @@ Each enclosure has eight individual SVG parts, one millimetre-unit DXF sheet, an
 - **5-inch:** [front plate 1:1](output/finger-joint/waveshare-5b/front-panel-1to1.pdf) · [A4 templates](output/finger-joint/waveshare-5b/a4-fit-templates.pdf) · [DXF sheet](output/finger-joint/waveshare-5b/prototype-cut-sheet.dxf)
 - **7B:** [front plate 1:1](output/finger-joint/waveshare-7b/front-panel-1to1.pdf) · [A4 templates](output/finger-joint/waveshare-7b/a4-fit-templates.pdf) · [DXF sheet](output/finger-joint/waveshare-7b/prototype-cut-sheet.dxf)
 - **7B and 5B together:** [combined DXF sheet, 16 parts](output/finger-joint/waveshare-7b-5b-cut-sheet.dxf)
+- **All three cases:** [workshop DXF with Raspberry Pi 4, 22 parts](output/finger-joint/workshop-all-cases.dxf)
 - **Joint calibration:** [fit coupon PDF](output/finger-joint/fit-coupon/fit-coupon.pdf) · [fit coupon DXF](output/finger-joint/fit-coupon/fit-coupon.dxf)
 
 Print PDF templates at **100% / Actual size**, with page fitting disabled. Check the 50 mm control line with a ruler. The DXF and SVG files are cutting geometry. The PDFs are paper fit templates. All eight parts have separate outlines on each DXF sheet.
