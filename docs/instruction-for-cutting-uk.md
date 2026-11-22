@@ -2,6 +2,14 @@
 
 Потрібно виготовити **три окремі пробні корпуси** з литого акрилу номінальною товщиною **3 мм**: для Raspberry Pi 4 Model B, екрана Waveshare 5″ та екрана Waveshare 7B. Кожен корпус складається із шести деталей. Усі розміри у файлах — у міліметрах.
 
+## 3D-вигляд корпусів
+
+| Raspberry Pi 4 Model B | Waveshare 5″ | Waveshare 7B |
+| :---: | :---: | :---: |
+| <img src="../Raspberry/V4/visualization/raspberry-pi-4-photo-board-render.png" width="250" alt="Рендер акрилового корпусу Raspberry Pi 4"> | <img src="../visualization/waveshare-5b/waveshare-5b-photoreal.png" width="250" alt="Рендер акрилового корпусу Waveshare 5″"> | <img src="../visualization/waveshare-7b/waveshare-7b-photoreal.png" width="250" alt="Рендер акрилового корпусу Waveshare 7B"> |
+| [Обертати 3D-модель](../Raspberry/V4/visualization/raspberry-pi-4-acrylic-showcase.stl) | [Обертати 3D-модель](../visualization/waveshare-5b/waveshare-5b-acrylic-showcase.stl) | [Обертати 3D-модель](../visualization/waveshare-7b/waveshare-7b-acrylic-showcase.stl) |
+
+Для різання використовуйте DXF із відповідного розділу нижче.
 
 ## 1. Raspberry Pi 4 Model B
 
